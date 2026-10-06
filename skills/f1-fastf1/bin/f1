@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# f1 — Formula 1 data CLI (FastF1-backed).
+# Usage: f1 f1 <command> [--key=value ...]
+# Example: f1 f1 get_race_schedule --year=2026
+set -euo pipefail
+
+SKILL_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export F1_FASTF1_CACHE_DIR="${F1_FASTF1_CACHE_DIR:-$SKILL_DIR/.cache/fastf1}"
+
+exec "$SKILL_DIR/.venv/bin/python" "$SKILL_DIR/bin/f1_cli.py" "$@"
