@@ -17,34 +17,36 @@ Answer F1 questions with real session data: schedules, classifications, lap timi
 
 ## Tooling
 
-Single entry point — a wrapper that uses the skill's own venv and a persistent FastF1 cache:
+Single entry point — a wrapper script plus a Python CLI, with a persistent FastF1 cache.
+First-time setup is required (this repo does not ship `.venv/`): follow `INSTALL.md`
+for the one-time venv setup — those steps were verified end-to-end in a fresh venv.
 
 ```bash
-~/workspace/skills/f1-fastf1/bin/f1 f1 <command> [--key=value ...]
+<skill-dir>/bin/f1 f1 <command> [--key=value ...]
 ```
 
 Examples:
 
 ```bash
 # Season calendar
-~/workspace/skills/f1-fastf1/bin/f1 f1 get_race_schedule --year=2026
+<skill-dir>/bin/f1 f1 get_race_schedule --year=2026
 
 # Race classification
-~/workspace/skills/f1-fastf1/bin/f1 f1 get_race_results --year=2026 --event="Azerbaijan Grand Prix"
+<skill-dir>/bin/f1 f1 get_race_results --year=2026 --event="Azerbaijan Grand Prix"
 
 # Lap-by-lap for one driver (sectors + compounds)
-~/workspace/skills/f1-fastf1/bin/f1 f1 get_lap_data --year=2026 --event="Azerbaijan Grand Prix" --driver="VER"
+<skill-dir>/bin/f1 f1 get_lap_data --year=2026 --event="Azerbaijan Grand Prix" --driver="VER"
 
 # Tire strategy / stints / degradation
-~/workspace/skills/f1-fastf1/bin/f1 f1 get_tire_analysis --year=2026 --event="Azerbaijan Grand Prix"
+<skill-dir>/bin/f1 f1 get_tire_analysis --year=2026 --event="Azerbaijan Grand Prix"
 
 # Standings (optionally after a given round)
-~/workspace/skills/f1-fastf1/bin/f1 f1 get_championship_standings --year=2026 --round=15
+<skill-dir>/bin/f1 f1 get_championship_standings --year=2026 --round=15
 ```
 
 Output is JSON: `{"status": true, "data": ...}`. FastF1 cache lives in `.cache/fastf1/` inside the skill dir and is reused across calls.
 
-Implementation: `bin/f1` (bash) → `bin/f1_cli.py` (enables the cache, delegates to the upstream `sports-skills` CLI). Python deps live in `.venv/` (sports-skills 0.35.0, fastf1 3.8.3, Python 3.12). Do not `pip install` into the system Python; use the venv.
+Implementation: `bin/f1` (bash) → `bin/f1_cli.py` (enables the cache, delegates to the upstream `sports-skills` CLI). Python deps live in `.venv/` — create it per `INSTALL.md` (sports-skills 0.35.0, fastf1 3.8.3, Python 3.12). Do not `pip install` into the system Python; use the venv.
 
 ## Auth
 
@@ -64,3 +66,4 @@ None. FastF1 pulls public F1 livetiming history; no key required.
 ## References
 
 - `references/api-reference.md` — all 13 commands, parameters, return schemas, workflows.
+- `INSTALL.md` — one-time venv setup, verified end-to-end (bilingual / 中英双语).
